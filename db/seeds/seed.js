@@ -1,14 +1,14 @@
-const db = require("../db");
+const db = require("../connection");
 const format = require("pg-format");
 
 const seed = (data) => {
   const { categoryData, commentData, reviewData, userData } = data;
   return db
-    .query(`DROP TABLE IF EXIST comments;`)
+    .query(`DROP TABLE IF EXISTS comments;`)
     .then(() => {
       return db.query(`DROP TABLE IF EXISTS reviews;`).then(() => {
         return db.query(`DROP TABLE IF EXISTS users;`).then(() => {
-          return db.query(`DROP TABLE IF EXISTS categories`);
+          return db.query(`DROP TABLE IF EXISTS categories;`);
         });
       });
     })
@@ -31,13 +31,13 @@ const seed = (data) => {
       title VARCHAR(50),
       review_body TEXT NOT NULL,
       designer VARCHAR(50),
-      review_img_url TEXT DEFAULT 'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg',
+      review_img_url TEXT DEFAULT E'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg',
       votes INT DEFAULT 0,
       category VARCHAR(50) NOT NULL,
       owner VARCHAR(50) NOT NULL,
-      created_at DATE DEFAULT getDate(),
+      created_at DATE DEFAULT NOW(),
       FOREIGN KEY (category) REFERENCES categories(slug),
-      FOREIGN KEY (owner) REFERENCES user(username)
+      FOREIGN KEY (owner) REFERENCES users(username)
     );`);
     })
     .then(() => {
@@ -46,10 +46,10 @@ const seed = (data) => {
         author VARCHAR(50) NOT NULL,
         review_id INT NOT NULL,
         votes INT DEFAULT 0,
-        create_at DATE DEFAULT getDate(),
+        create_at DATE DEFAULT NOW(),
         body TEXT NOT NULL,
         FOREIGN KEY (review_id) REFERENCES reviews(review_id),
-        FOREIGN KEY (author) REFERENCES user(username)
+        FOREIGN KEY (author) REFERENCES users(username)
       );`);
     });
   // 2. insert data
