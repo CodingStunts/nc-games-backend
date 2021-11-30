@@ -9,6 +9,12 @@ afterAll(() => db.end());
 
 describe("getCategories() GET /api/categories", () => {
   test("getCategories responds with status 200 and returns an array of categories", () => {
-    expect;
+    return request(app)
+      .get("/api/categories")
+      .expect(200)
+      .then((response) => {
+        expect(Array.isArray(response.body)).toBe(true);
+        expect(response.body.length).toBe();
+      });
   });
 });
