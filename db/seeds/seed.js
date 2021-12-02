@@ -46,7 +46,7 @@ const seed = (data) => {
         author VARCHAR(100) NOT NULL,
         review_id INT,
         votes INT DEFAULT 0,
-        create_at DATE DEFAULT NOW(),
+        created_at DATE DEFAULT NOW(),
         body TEXT NOT NULL,
         FOREIGN KEY (review_id) REFERENCES reviews(review_id),
         FOREIGN KEY (author) REFERENCES users(username)
@@ -109,13 +109,13 @@ const seed = (data) => {
           comment.author,
           comment.review_id,
           comment.votes,
-          comment.create_at,
+          comment.created_at,
           comment.body,
         ];
       });
       const queryString = format(
         `INSERT INTO comments
-        (author, review_id, votes, create_at, body)
+        (author, review_id, votes, created_at, body)
         VALUES
         %L
         RETURNING *;`,

@@ -3,15 +3,18 @@ const {
   getReviewWithID,
   patchReviewVotes,
   getReviews,
+  getCommentsByReview,
+  postCommentByReview,
 } = require("../controllers/reviews.controller");
 
-//GET /reviews/:review_id
 reviewsRouter.route("/:review_id").get(getReviewWithID);
-//PATCH /reviews/:review_id
+
 reviewsRouter.route("/:review_id").patch(patchReviewVotes);
-//GET /reviews
+
 reviewsRouter.route("/").get(getReviews);
-//GET /reviews/:review_id/comments
-//POST /reviews/:review_id/comments
+
+reviewsRouter.route("/:review_id/comments").get(getCommentsByReview);
+
+reviewsRouter.route("/:review_id/").post(postCommentByReview);
 
 module.exports = reviewsRouter;

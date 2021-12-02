@@ -3,6 +3,7 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
 const app = require("../server-items/app");
+const { forEach } = require("../db/data/test-data/categories.js");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -105,20 +106,106 @@ describe("getReviews() GET /api/reviews", () => {
         expect(response.body.length).toBe(13);
       });
   });
-  test("results returned on get request includes a comment_count key and value", () => {
+  test("results returned on get request includes a comment_count key and value, also all other keys", () => {
     return request(app)
       .get("/api/reviews")
       .expect(200)
       .then((response) => {
         expect(response.body[0].comment_count).toBe("0");
+        expect(response.body[1]).toEqual(
+          expect.objectContaining({
+            owner: expect.any(String),
+            review_body: expect.any(String),
+            designer: expect.any(String),
+            review_img_url: expect.any(String),
+            votes: expect.any(Number),
+            category: expect.any(String),
+            owner: expect.any(String),
+            created_at: expect.any(String),
+            comment_count: expect.any(String),
+          })
+        );
       });
   });
-  test("returns the filtered results based on query input", () => {
+  test("returns the filtered results based on defaults", () => {
     return request(app)
-      .get("/api/reviews?order=asc")
+      .get("/api/reviews")
       .expect(200)
       .then((response) => {
-        response;
+        expect(Array.isArray(response.body)).toBe(true);
+        expect(response.body).toBeSortedBy("created_at", { descending: true });
+      });
+  });
+  test("returns the filtered results based on query input for sort_by and order", () => {
+    return request(app)
+      .get("/api/reviews/?sort_by=category&order=ASC")
+      .expect(200)
+      .then((response) => {
+        expect(Array.isArray(response.body)).toBe(true);
+        expect(response.body).toBeSortedBy("category", { ascending: true });
+      });
+  });
+  test("returns the filtered results based on query input for category", () => {
+    return request(app)
+      .get("/api/reviews/?category=dexterity")
+      .expect(200)
+      .then((response) => {
+        expect(Array.isArray(response.body)).toBe(true);
+        const body = response.body;
+        body.forEach((res) => {
+          expect(res.category).toBe("dexterity");
+        });
+      });
+  });
+  test("returns the filtered results based on query input for category with a space", () => {
+    return request(app)
+      .get("/api/reviews/?category=euro_game")
+      .expect(200)
+      .then((response) => {
+        expect(Array.isArray(response.body)).toBe(true);
+        const body = response.body;
+        body.forEach((res) => {
+          expect(res.category).toBe("euro game");
+        });
+      });
+  });
+  describe("getCommentsByReview() GET /api/reviews/:review_id/comments", () => {
+    test("returns an array of comments with the inputted review_id", () => {
+      return request(app)
+        .get("/api/reviews/2/comments")
+        .expect(200)
+        .then((response) => {
+          response.body.forEach((comment) => {
+            expect.objectContaining({
+              comment_id: expect.any(Number),
+              votes: expect.any(Number),
+              created_at: expect.any(String),
+              author: expect.any(String),
+              body: expect.any(String),
+            });
+          });
+        });
+    });
+  });
+});
+
+describe("postCommentsByReview() POST /api/reviews/:review_id/comments", () => {
+  test("sends a username and body object review to be posted, and responds with it", () => {
+    return request(app)
+      .post("/api/reviews/2")
+      .send({ username: "dav3rid", comment: "That slaysss!" })
+      .expect(201)
+      .then((response) => {
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            comment_id: expect.any(Number),
+            created_at: expect.any(String),
+            author: "dav3rid",
+            body: "That slaysss!",
+            votes: 0,
+            review_id: 2,
+          })
+        );
       });
   });
 });
