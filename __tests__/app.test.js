@@ -225,5 +225,5 @@ describe("deleteCommentsByID() DELETE /api/comments/:comment_id", () => {
   });
 });
 
-describe("deleteCommentsByID() DELETE /api/comments/:comment_id", () => {
-  test("deletes the required comment and returns a message to confirm this", () => {
+//describe("deleteCommentsByID() DELETE /api/comments/:comment_id", () => {
+//  test("deletes the required comment and returns a message to confirm this", () => {
