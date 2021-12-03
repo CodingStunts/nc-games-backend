@@ -1,9 +1,8 @@
-const express = require("express");
-const app = express();
-app.use(express.json());
 const commentsRouter = require("express").Router();
+const { removeCommentByID } = require("../controllers/comments.controller");
 
-//DELETE /comments/:comment_id
+commentsRouter.route("/:comment_id").delete(removeCommentByID);
+
 //then after all first complete:
 //PATCH /comments/:comment_id
 

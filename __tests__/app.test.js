@@ -3,7 +3,6 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
 const app = require("../server-items/app");
-const { forEach } = require("../db/data/test-data/categories.js");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -209,3 +208,22 @@ describe("postCommentsByReview() POST /api/reviews/:review_id/comments", () => {
       });
   });
 });
+
+describe("deleteCommentsByID() DELETE /api/comments/:comment_id", () => {
+  test("deletes the required comment and returns a message to confirm this", () => {
+    return request(app)
+      .delete("/api/comments/1")
+      .expect(204)
+      .then((response) => {
+        return db
+          .query(`SELECT * FROM comments WHERE comment_id = 1;`)
+          .then((result) => {
+            const resultsArr = result.rows;
+            expect(resultsArr.length).toBe(0);
+          });
+      });
+  });
+});
+
+describe("deleteCommentsByID() DELETE /api/comments/:comment_id", () => {
+  test("deletes the required comment and returns a message to confirm this", () => {

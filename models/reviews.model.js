@@ -3,6 +3,7 @@ const categories = require("../db/data/test-data/categories");
 const comments = require("../db/data/test-data/comments");
 const reviews = require("../db/data/test-data/reviews");
 
+//Looking to refactor as a single complex query, as per below.
 exports.selectReviewWithID = (review_id) => {
   return db
     .query("SELECT * FROM reviews WHERE review_id = $1;", [review_id])
@@ -22,6 +23,7 @@ exports.selectReviewWithID = (review_id) => {
       return reviewRes;
     });
 };
+//Refactoring to RETURN*
 exports.updateReviewVotes = (review_id, votes) => {
   return db
     .query("UPDATE reviews SET votes = votes + $1 WHERE review_id = $2;", [
