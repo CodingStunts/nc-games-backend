@@ -5,6 +5,8 @@
   "GET /api/categories": {
     "description": "serves an array of all categories",
     "queries": [],
+    "required in example": {},
+
     "exampleResponse": {
       "categories": [
         {
@@ -17,6 +19,8 @@
   "GET /api/reviews": {
     "description": "serves an array of all reviews",
     "queries": ["category", "sort_by", "order"],
+    "required in example": {},
+
     "exampleResponse": {
       "reviews": [
         {
@@ -30,5 +34,75 @@
         }
       ]
     }
+  },
+  "GET /api/reviews/:review_id": {
+    "description": "serves up a json representation of a single review by it's ID number",
+    "queries": [],
+    "required in example": {},
+
+    "exampleResponse": {
+      "review": {
+        "title": "One Night Ultimate Werewolf",
+        "designer": "Akihisa Okui",
+        "owner": "happyamy2016",
+        "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "category": "hidden-roles",
+        "created_at": 1610964101251,
+        "votes": 5
+      }
+    }
+  },
+  "GET /api/reviews/:review_id/comments": {
+    "description": "serves up a json representation of an array of all comments posted to a single review ID",
+    "queries": [],
+    "required in example": {},
+
+    "exampleResponse": {
+      "comments": {
+        "body": "My dog loved this game too!",
+        "votes": 3,
+        "author": "tickle122",
+        "review_id": 4,
+        "created_at": "new Date(1610964545410)"
+      }
+    }
+  },
+  "PATCH /api/reviews/:review_id": {
+    "description": "updates the votes count of a single review object with a given input provided by you",
+    "queries": [],
+    "required input example": "{inc_votes: 10}, {inc_votes: -4}",
+
+    "exampleResponse": {
+      "review": {
+        "title": "One Night Ultimate Werewolf",
+        "designer": "Akihisa Okui",
+        "owner": "happyamy2016",
+        "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "category": "hidden-roles",
+        "created_at": 1610964101251,
+        "votes": 5
+      }
+    }
+  },
+  "POST /api/reviews/:review_id": {
+    "description": "posts a new comment on a review using it's review ID and returns the new comment",
+    "queries": [],
+    "required input example": "{username: 'dav3rid', comment: 'Totally agree!'}",
+
+    "exampleResponse": {
+      "comment_id": "5",
+      "created_at": "01/01/01",
+      "author": "dav3rid",
+      "body": "Totally agree!",
+      "votes": 0,
+      "review_id": 2
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "deletes a comment on a review using it's comment ID, returns nothing",
+    "queries": [],
+    "required in example": {},
+
+    "exampleResponse": {}
   }
 }

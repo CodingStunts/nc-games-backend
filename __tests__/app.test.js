@@ -225,5 +225,13 @@ describe("deleteCommentsByID() DELETE /api/comments/:comment_id", () => {
   });
 });
 
-//describe("deleteCommentsByID() DELETE /api/comments/:comment_id", () => {
-//  test("deletes the required comment and returns a message to confirm this", () => {
+describe("getEndpoints() GET /api", () => {
+  test("returns a JSON object of endpoints", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then((result) => {
+        console.log(result.body);
+      });
+  });
+});
