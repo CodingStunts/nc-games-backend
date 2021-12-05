@@ -16,27 +16,37 @@ exports.selectReviewWithID = (review_id) => {
       return Promise.all([secondQuery, review[0]]);
     })
     .then((results) => {
-      const commentsCount = results[0].rowCount;
       const reviewRes = results[1];
+      if (!reviewRes) {
+        return Promise.reject({
+          status: 404,
+          msg: `No review found for with review_id: ${review_id}`,
+        });
+      }
+      const commentsCount = results[0].rowCount;
       reviewRes.comment_count = commentsCount;
-      // console.log(reviewRes);
       return reviewRes;
     });
 };
 //Refactoring to RETURN*
 exports.updateReviewVotes = (review_id, votes) => {
   return db
-    .query("UPDATE reviews SET votes = votes + $1 WHERE review_id = $2;", [
-      votes,
-      review_id,
-    ])
-    .then(() => {
-      return db.query("SELECT * FROM reviews WHERE review_id = $1;", [
-        review_id,
-      ]);
-    })
+    .query("SELECT * FROM reviews WHERE review_id = $1;", [review_id])
     .then((result) => {
-      return result.rows[0];
+      if (result.rows.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: `No review found for with review_id: ${review_id}`,
+        });
+      }
+      return db
+        .query(
+          "UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING*;",
+          [votes, review_id]
+        )
+        .then((result) => {
+          return result.rows[0];
+        });
     });
 };
 
