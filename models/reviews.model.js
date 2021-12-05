@@ -20,7 +20,7 @@ exports.selectReviewWithID = (review_id) => {
       if (!reviewRes) {
         return Promise.reject({
           status: 404,
-          msg: `No review found for with review_id: ${review_id}`,
+          msg: `No review found with review_id: ${review_id}`,
         });
       }
       const commentsCount = results[0].rowCount;
