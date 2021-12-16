@@ -5,8 +5,14 @@ exports.handleCustomErrors = (err, req, res, next) => {
 };
 
 exports.handlePsqlErrors = (err, req, res, next) => {
-  if (err.code === "23503") {
-    res.status(400).send("Invalid input!");
+  if (err.code === "22P02") {
+    res.status(400).send("Invalid request input!");
+  } else if (err.code === "42601") {
+    res.status(400).send("Invalid ordering criteria given!");
+  } else if (err.code === "42703") {
+    res.status(400).send("Invalid sorting criteria given!");
+  } else if (err.code === "23503") {
+    res.status(404).send("Request ID or username doesn't exist!");
   } else next(err);
 };
 

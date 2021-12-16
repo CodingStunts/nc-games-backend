@@ -30,6 +30,12 @@ exports.selectReviewWithID = (review_id) => {
 };
 //Refactoring to RETURN*
 exports.updateReviewVotes = (review_id, votes) => {
+  if (typeof votes !== "number" && votes !== undefined) {
+    return Promise.reject({
+      status: 400,
+      msg: `The inc_votes value: '${votes}' is not a valid input!`,
+    });
+  }
   return db
     .query("SELECT * FROM reviews WHERE review_id = $1;", [review_id])
     .then((result) => {
@@ -56,15 +62,28 @@ exports.selectReviews = (queryData) => {
   COUNT(comments.review_id) AS comment_count
   FROM reviews LEFT JOIN comments ON comments.review_id =
   reviews.review_id`;
-
+  let newCategory = "";
   if (category !== undefined) {
-    let newCategory = category.replace(/_/g, " ");
+    newCategory = category.replace(/_/g, " ");
     queryString += ` WHERE category = '${newCategory}'`;
   }
 
   if (order === undefined) order = "DESC";
   if (sort_by === undefined) sort_by = "created_at";
   queryString += ` GROUP BY reviews.review_id ORDER BY ${sort_by} ${order};`;
+
+  if (
+    category !== undefined &&
+    newCategory !== "euro game" &&
+    newCategory !== "social deduction" &&
+    newCategory !== "dexterity" &&
+    newCategory !== "children's games"
+  ) {
+    return Promise.reject({
+      status: 404,
+      msg: "Sorry, we couldn't find what you're looking for!",
+    });
+  }
 
   return db.query(queryString).then((results) => {
     const reviews = results.rows;
@@ -77,12 +96,21 @@ exports.selectCommentsByReview = (review_id) => {
     .query(`SELECT * FROM comments WHERE review_id = $1;`, [review_id])
     .then((results) => {
       const comments = results.rows;
+      if (comments.length === 0) {
+        //need to find a way to check if ID is valid but has no comments vs a yet-to-exist ID, such as 80.
+      }
       return comments;
     });
 };
 
 exports.insertCommentByReview = (body, review_id) => {
   const { username, comment } = body;
+  if (!username || !comment) {
+    return Promise.reject({
+      status: 400,
+      msg: "You seem to have omitted either your username or comment!",
+    });
+  }
 
   return db
     .query(
