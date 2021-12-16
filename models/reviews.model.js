@@ -96,8 +96,18 @@ exports.selectCommentsByReview = (review_id) => {
     .query(`SELECT * FROM comments WHERE review_id = $1;`, [review_id])
     .then((results) => {
       const comments = results.rows;
+      console.log(comments);
       if (comments.length === 0) {
-        //need to find a way to check if ID is valid but has no comments vs a yet-to-exist ID, such as 80.
+        return db
+          .query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
+          .then((result) => {
+            if (result.rows.length === 0) {
+              return Promise.reject({
+                status: 404,
+                msg: "Review ID doesn't exist!",
+              });
+            }
+          });
       }
       return comments;
     });

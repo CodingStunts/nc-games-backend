@@ -263,13 +263,12 @@ describe("getCommentsByReview() GET /api/reviews/:review_id/comments", () => {
         expect(text).toBe("Invalid request input!");
       });
   });
-  //coming back to this test, line 100 on reviews model.
   test("returns 404 status when review_id doesn't exist", () => {
     return request(app)
-      .get("/api/reviews/666/comments")
+      .get("/api/reviews/66/comments")
       .expect(404)
       .then(({ text }) => {
-        expect(text).toBe("review id doesn't exist");
+        expect(text).toBe("Review ID doesn't exist!");
       });
   });
 });
@@ -383,7 +382,7 @@ describe("deleteCommentsByID() DELETE /api/comments/:comment_id", () => {
       .delete("/api/comments/89")
       .expect(404)
       .then(({ text }) => {
-        expect(text).toBe("There doesn't seem to a be comment with ID 89!");
+        expect(text).toBe("There doesn't seem to be a comment with ID 89!");
       });
   });
 });
