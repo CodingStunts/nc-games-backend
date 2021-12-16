@@ -84,7 +84,7 @@
       }
     }
   },
-  "POST /api/reviews/:review_id": {
+  "POST /api/reviews/:review_id/comments": {
     "description": "posts a new comment on a review using it's review ID and returns the new comment",
     "queries": [],
     "required input example": "{username: 'dav3rid', comment: 'Totally agree!'}",
