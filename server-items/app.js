@@ -14,11 +14,4 @@ app.use(handlePsqlErrors);
 app.use(handleServerErrors);
 app.use("/*", handleCustomErrors);
 
-/* (err, req, res, next) => {
-  if (!app)
-    res.status(404).send({ msg: "Not a valid request! Input incorrect.", err });
-};
- */
 module.exports = app;
-
-//app > api router > comments router > comments contr > comments model, invokes db > controller and send
