@@ -22,22 +22,19 @@ To proceed with the following you will need to have a code editor downloaded and
 npm i
 ```
 
-**PostgresQL**
-https://www.postgresql.org/
+[**PostgresQL**](https://www.postgresql.org/)
 
 ```
 npm i pg
 ```
 
-**Express**
-https://www.npmjs.com/package/express
+[**Express**](https://www.npmjs.com/package/express)
 
 ```
 npm i express
 ```
 
-**dotenv**
-https://www.npmjs.com/package/dotenv
+[**dotenv**](https://www.npmjs.com/package/dotenv)
 
 ```
 npm i dotenv
@@ -45,15 +42,13 @@ npm i dotenv
 
 The testing on this project will require:
 
-**Supertest**
-https://www.npmjs.com/package/supertest
+[**Supertest**](https://www.npmjs.com/package/supertest)
 
 ```
 npm i supertest
 ```
 
-**Jest**
-https://www.npmjs.com/package/jest
+[**Jest**](https://www.npmjs.com/package/jest)
 
 ```
 npm i jest
