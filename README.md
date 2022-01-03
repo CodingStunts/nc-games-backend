@@ -1,7 +1,7 @@
 # Northcoders Backend Server Project - Games
 
-Link to hosted server: https://jays-games-server.herokuapp.com/api/
-Link to GitHub repository: https://github.com/CodingStunts/be-nc-games
+[***Link to hosted server***] (https://jays-games-server.herokuapp.com/api/)
+[***Link to GitHub repository***] (https://github.com/CodingStunts/be-nc-games)
 
 Hello and welcome to my project page! This server project forms the backend element of my portfolio piece which will later be accompanied by a frontend interface made using React. Node.js is the language used for this project, further making use of Express as the framework for the server, PostgresQL for the database, along with Jest and Supertest for the testing during development. It has now been hosted using Heroku.
 
@@ -10,7 +10,7 @@ Please see the /api page on the hosted version (linked above) for a full rundown
 
 ## SET UP
 
-To proceed with the following you will need to have a code editor downloaded and install some dependencies.
+_To proceed with the following you will need to have a code editor downloaded and install some dependencies._
 
 **1.** To clone this project from GitHub select the green 'Code' button and copy the https link into your terminal, using command `git clone https://github.com/CodingStunts/be-nc-games.git`. You should then be able to boot it up in your code editor to look it over by changing directory to the newly cloned repository and using command `code .` in your terminal. All associated files on this repo should then be available to you locally.
 
