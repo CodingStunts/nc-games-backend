@@ -15,45 +15,19 @@ _To proceed with the following you will need to have a code editor downloaded an
 
 **1.** To clone this project from GitHub select the green 'Code' button and copy the https link into your terminal, using command `git clone https://github.com/CodingStunts/be-nc-games.git`. You should then be able to boot it up in your code editor to look it over by changing directory to the newly cloned repository and using command `code .` in your terminal. All associated files on this repo should then be available to you locally.
 
-**2.** In order to get the project running locally as intended you will need to install the following npm dependencies via your terminal in your code editor, starting with npm as the package manager required for all the others.
+**2.** In order to get the project running locally as intended you will need to install the following npm dependencies via your terminal in your code editor.
 
-**npm**
-
-```
-npm i
-```
+Using command `npm i` this should install the following:
 
 [**PostgresQL**](https://www.postgresql.org/)
 
-```
-npm i pg
-```
-
 [**Express**](https://www.npmjs.com/package/express)
-
-```
-npm i express
-```
 
 [**dotenv**](https://www.npmjs.com/package/dotenv)
 
-```
-npm i dotenv
-```
-
-The testing on this project will require:
-
 [**Supertest**](https://www.npmjs.com/package/supertest)
 
-```
-npm i supertest
-```
-
 [**Jest**](https://www.npmjs.com/package/jest)
-
-```
-npm i jest
-```
 
 **3.** The environment the server runs in will dictate which database it uses, i.e. the test database or development database. You must create a new file in your code editor within the outermost folder of this repo called `.env.test` and also `.env.development`. In the env.test file you must write `PGDATABASE=nc_games_test` and in the env.development file it needs `PGDATABASE=nc_games`. Once these two parts are complete the server should be able to run as intended!
 
