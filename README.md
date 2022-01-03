@@ -1,6 +1,7 @@
 # Northcoders Backend Server Project - Games
 
 [**_Link to hosted server_**](https://jays-games-server.herokuapp.com/api/)
+
 [**_Link to GitHub repository_**](https://github.com/CodingStunts/be-nc-games)
 
 Hello and welcome to my project page! This server project forms the backend element of my portfolio piece which will later be accompanied by a frontend interface made using React. Node.js is the language used for this project, further making use of Express as the framework for the server, PostgresQL for the database, along with Jest and Supertest for the testing during development. It has now been hosted using Heroku.
