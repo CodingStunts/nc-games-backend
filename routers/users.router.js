@@ -1,11 +1,8 @@
-const express = require("express");
-const app = express();
-app.use(express.json());
-
 const usersRouter = require("express").Router();
+const { getUsers, getUserByID } = require("../controllers/users.controller");
 
-//after main first endpoints:
-// GET /users
-// GET /users/:username
+usersRouter.route("/").get(getUsers);
+
+usersRouter.route("/:username").get(getUserByID);
 
 module.exports = usersRouter;

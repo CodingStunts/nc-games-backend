@@ -10,6 +10,7 @@ apiRouter.use("/users", usersRouter);
 apiRouter.use("/categories", categoriesRouter);
 apiRouter.use("/reviews", reviewsRouter);
 apiRouter.use("/comments", commentsRouter);
+apiRouter.use("/users", usersRouter);
 apiRouter.use(getEndpoints);
 
 module.exports = apiRouter;

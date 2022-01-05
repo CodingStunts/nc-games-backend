@@ -94,14 +94,12 @@ exports.selectReviews = (queryData) => {
 exports.selectCommentsByReview = (review_id) => {
   return db
     .query(`SELECT * FROM comments WHERE review_id = $1;`, [review_id])
-    .then((results) => {
-      const comments = results.rows;
-      console.log(comments);
-      if (comments.length === 0) {
+    .then(({ rows }) => {
+      if (rows.length === 0) {
         return db
           .query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id])
-          .then((result) => {
-            if (result.rows.length === 0) {
+          .then(({ rows }) => {
+            if (rows.length === 0) {
               return Promise.reject({
                 status: 404,
                 msg: "Review ID doesn't exist!",
