@@ -13,20 +13,20 @@ describe("getCategories() GET /api/categories", () => {
       .get("/api/categories")
       .expect(200)
       .then(({ body }) => {
-        expect(Array.isArray(body)).toBe(true);
-        expect(body.length).toBe(4);
+        expect(Array.isArray(body.categories)).toBe(true);
+        expect(body.categories.length).toBe(4);
       });
   });
   test("getCategories returns correct object keys and values", () => {
     return request(app)
       .get("/api/categories")
       .expect(200)
-      .then((response) => {
-        expect(response.body[0].description).toBe(
+      .then(({ body }) => {
+        expect(body.categories[0].description).toBe(
           "Abstact games that involve little luck"
         );
-        expect(response.body[0].slug).toBe("euro game");
-        response.body.forEach((category) => {
+        expect(body.categories[0].slug).toBe("euro game");
+        body.categories.forEach((category) => {
           expect(category).toEqual(
             expect.objectContaining({
               slug: expect.any(String),
@@ -52,7 +52,7 @@ describe("getReviewsByID() GET /api/reviews/:review_id", () => {
       .get("/api/reviews/3")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toEqual(
+        expect(body.review).toEqual(
           expect.objectContaining({
             title: expect.any(String),
             review_body: expect.any(String),
@@ -65,11 +65,11 @@ describe("getReviewsByID() GET /api/reviews/:review_id", () => {
             comment_count: expect.any(Number),
           })
         );
-        expect(body.title).toBe("Ultimate Werewolf");
-        expect(body.designer).toBe("Akihisa Okui");
-        expect(body.owner).toBe("bainesface");
-        expect(body.votes).toBe(5);
-        expect(body.comment_count).toBe(3);
+        expect(body.review.title).toBe("Ultimate Werewolf");
+        expect(body.review.designer).toBe("Akihisa Okui");
+        expect(body.review.owner).toBe("bainesface");
+        expect(body.review.votes).toBe(5);
+        expect(body.review.comment_count).toBe(3);
       });
   });
   test("getReviewsByID ERROR returns a 404 status and error message when review_id doesn't exist", () => {
@@ -100,13 +100,13 @@ describe("patchReviewVotes() PATCH /api/reviews/:review_id", () => {
         expect(typeof body).toBe("object");
       });
   });
-  test("patchReviewVotes() returns a 200 status with the review item updated", () => {
+  test("patchReviewVotes returns a 200 status with the review item updated", () => {
     return request(app)
       .patch("/api/reviews/1")
       .send({ inc_votes: -20 })
       .expect(200)
       .then(({ body }) => {
-        expect(body.votes).toBe(-19);
+        expect(body.review.votes).toBe(-19);
       });
   });
   test("patchReviewVotes ERROR returns a 404 status and error message when review_id doesn't exist", () => {
@@ -115,7 +115,7 @@ describe("patchReviewVotes() PATCH /api/reviews/:review_id", () => {
       .send({ inc_votes: 1 })
       .expect(404)
       .then(({ text }) => {
-        expect(text).toBe("No review found for with review_id: 50");
+        expect(text).toBe("No review found with the review_id: 50");
       });
   });
   test("patchReviewVotes ERROR returns a 400 status and error message when review_id is invalid", () => {
@@ -127,7 +127,7 @@ describe("patchReviewVotes() PATCH /api/reviews/:review_id", () => {
         expect(text).toBe("Invalid request input!");
       });
   });
-  test("patchReviewVotes() ERROR returns a 400 status and error message when inc_votes isn't valid", () => {
+  test("patchReviewVotes ERROR returns a 400 status and error message when inc_votes isn't valid", () => {
     return request(app)
       .patch("/api/reviews/2")
       .send({ inc_votes: "pies" })
@@ -136,13 +136,14 @@ describe("patchReviewVotes() PATCH /api/reviews/:review_id", () => {
         expect(text).toBe("The inc_votes value: 'pies' is not a valid input!");
       });
   });
-  test("patchReviewVotes() returns a 200 status with the review item unchanged when the inc_votes key is blank.", () => {
+  test("patchReviewVotes returns a 200 status with the review item unchanged when the inc_votes key is blank.", () => {
     return request(app)
       .patch("/api/reviews/1")
       .send({})
       .expect(200)
-      .then((response) => {
-        expect(typeof response.body).toBe("object");
+      .then(({ body }) => {
+        expect(typeof body).toBe("object");
+        expect(body.review.votes).toBe(1);
       });
   });
 });
@@ -153,10 +154,10 @@ describe("getReviews() GET /api/reviews", () => {
       .get("/api/reviews")
       .expect(200)
       .then(({ body }) => {
-        expect(Array.isArray(body)).toBe(true);
-        expect(body.length).toBe(13);
-        expect(body[0].comment_count).toBe("0");
-        expect(body[1]).toEqual(
+        expect(Array.isArray(body.reviews)).toBe(true);
+        expect(body.reviews.length).toBe(13);
+        expect(body.reviews[0].comment_count).toBe("0");
+        expect(body.reviews[1]).toEqual(
           expect.objectContaining({
             owner: expect.any(String),
             review_body: expect.any(String),
@@ -194,7 +195,7 @@ describe("getReviews() GET /api/reviews", () => {
       .get("/api/reviews/?category=dexterity")
       .expect(200)
       .then(({ body }) => {
-        body.forEach((res) => {
+        body.reviews.forEach((res) => {
           expect(res.category).toBe("dexterity");
         });
       });
@@ -204,7 +205,7 @@ describe("getReviews() GET /api/reviews", () => {
       .get("/api/reviews/?category=euro_game")
       .expect(200)
       .then(({ body }) => {
-        body.forEach((res) => {
+        body.reviews.forEach((res) => {
           expect(res.category).toBe("euro game");
         });
       });
@@ -241,7 +242,7 @@ describe("getCommentsByReview() GET /api/reviews/:review_id/comments", () => {
       .get("/api/reviews/2/comments")
       .expect(200)
       .then(({ body }) => {
-        body.forEach((comment) => {
+        body.comments.forEach((comment) => {
           expect.objectContaining({
             comment_id: expect.any(Number),
             votes: expect.any(Number),
@@ -277,7 +278,7 @@ describe("postCommentsByReview() POST /api/reviews/:review_id/comments", () => {
       .send({ username: "dav3rid", comment: "That slaysss!" })
       .expect(201)
       .then(({ body }) => {
-        expect(body).toEqual(
+        expect(body.comment[0]).toEqual(
           expect.objectContaining({
             comment_id: expect.any(Number),
             created_at: expect.any(String),
@@ -300,7 +301,7 @@ describe("postCommentsByReview() POST /api/reviews/:review_id/comments", () => {
       })
       .expect(201)
       .then(({ body }) => {
-        expect(body).toEqual(
+        expect(body.comment[0]).toEqual(
           expect.objectContaining({
             comment_id: expect.any(Number),
             created_at: expect.any(String),
@@ -434,6 +435,70 @@ describe("getUsersByID() GET /api/users/:username", () => {
       .expect(404)
       .then(({ text }) => {
         expect(text).toBe("Username doesn't exist!");
+      });
+  });
+});
+
+describe("patchCommentVotes PATCH /api/comments/:comment_id", () => {
+  test("patchCommentVotes returns a 200 status with the updated comment item", () => {
+    return request(app)
+      .patch("/api/comments/2")
+      .send({ inc_votes: 5 })
+      .expect(200)
+      .then(({ body }) => {
+        expect(typeof body).toBe("object");
+        expect(body.comment[0].comment_id).toBe(2);
+        expect(body.comment[0].votes).toBe(18);
+        expect(body.comment.length).toBe(1);
+      });
+  });
+  test("patchCommentVotes returns a 200 status with the updated comment item updated", () => {
+    return request(app)
+      .patch("/api/comments/1")
+      .send({ inc_votes: -5 })
+      .expect(200)
+      .then(({ body }) => {
+        expect(typeof body).toBe("object");
+        expect(body.comment[0].comment_id).toBe(1);
+        expect(body.comment[0].votes).toBe(11);
+        expect(body.comment.length).toBe(1);
+      });
+  });
+  test("patchCommentVotes ERROR returns 404 status when comment_id is doesn't exist", () => {
+    return request(app)
+      .patch("/api/comments/42")
+      .send({ inc_votes: 3 })
+      .expect(404)
+      .then(({ text }) => {
+        expect(text).toBe("No review found with the comment_id: 42");
+      });
+  });
+  test("patchCommentVotes ERROR returns 400 status when comment_id is invalid", () => {
+    return request(app)
+      .patch("/api/comments/not-an-id")
+      .send({ inc_votes: -1 })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("Invalid request input!");
+      });
+  });
+  test("patchCommentVotes ERROR returns 400 status when the inc_votes value isn't valid", () => {
+    return request(app)
+      .patch("/api/comments/3")
+      .send({ inc_votes: "trees" })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe(`The inc_votes value: 'trees' is not a valid input!`);
+      });
+  });
+  test("patchCommentVotes returns a 200 status with the review item unchanged when the inc_votes key is blank.", () => {
+    return request(app)
+      .patch("/api/comments/3")
+      .send({})
+      .expect(200)
+      .then(({ body }) => {
+        expect(typeof body).toBe("object");
+        expect(body.comment[0].votes).toBe(10);
       });
   });
 });

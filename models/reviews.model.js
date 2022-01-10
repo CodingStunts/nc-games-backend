@@ -28,7 +28,7 @@ exports.selectReviewWithID = (review_id) => {
       return reviewRes;
     });
 };
-//Refactoring to RETURN*
+
 exports.updateReviewVotes = (review_id, votes) => {
   if (typeof votes !== "number" && votes !== undefined) {
     return Promise.reject({
@@ -36,23 +36,21 @@ exports.updateReviewVotes = (review_id, votes) => {
       msg: `The inc_votes value: '${votes}' is not a valid input!`,
     });
   }
+  let newVotes = votes;
+  if (votes === undefined) newVotes = 0;
   return db
-    .query("SELECT * FROM reviews WHERE review_id = $1;", [review_id])
+    .query(
+      "UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING*;",
+      [newVotes, review_id]
+    )
     .then((result) => {
       if (result.rows.length === 0) {
         return Promise.reject({
           status: 404,
-          msg: `No review found for with review_id: ${review_id}`,
+          msg: `No review found with the review_id: ${review_id}`,
         });
       }
-      return db
-        .query(
-          "UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING*;",
-          [votes, review_id]
-        )
-        .then((result) => {
-          return result.rows[0];
-        });
+      return result.rows[0];
     });
 };
 
@@ -71,7 +69,7 @@ exports.selectReviews = (queryData) => {
   if (order === undefined) order = "DESC";
   if (sort_by === undefined) sort_by = "created_at";
   queryString += ` GROUP BY reviews.review_id ORDER BY ${sort_by} ${order};`;
-
+  //add categories in dev data to the below
   if (
     category !== undefined &&
     newCategory !== "euro game" &&

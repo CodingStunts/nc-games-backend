@@ -67,6 +67,34 @@
       }
     }
   },
+  "GET /api/users": {
+    "description": "serves up a json representation of an array of all users",
+    "queries": [],
+    "required in example": {},
+
+    "exampleResponse": {
+      "users": [
+        { "username": "user1" },
+        { "username": "seconduser" },
+        { "username": "3rduser" }
+      ]
+    }
+  },
+  "GET /api/users/username": {
+    "description": "serves up a json representation of a single users details by username",
+    "queries": [],
+    "required in example": {},
+
+    "exampleResponse": {
+      "user": [
+        {
+          "username": "username1",
+          "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4",
+          "name": "Our User"
+        }
+      ]
+    }
+  },
   "PATCH /api/reviews/:review_id": {
     "description": "updates the votes count of a single review object with a given input provided by you",
     "queries": [],
@@ -84,6 +112,24 @@
       }
     }
   },
+  "PATCH /api/comments/:comment_id": {
+    "description": "updates the votes count of a single comment object with a given input provided by you",
+    "queries": [],
+    "required input example": "{inc_votes: 10}, {inc_votes: -4}",
+
+    "exampleResponse": {
+      "review": {
+        "title": "One Night Ultimate Werewolf",
+        "designer": "Akihisa Okui",
+        "owner": "happyamy2016",
+        "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "category": "hidden-roles",
+        "created_at": 1610964101251,
+        "votes": 5
+      }
+    }
+  },
+
   "POST /api/reviews/:review_id/comments": {
     "description": "posts a new comment on a review using it's review ID and returns the new comment",
     "queries": [],
