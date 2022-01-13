@@ -80,7 +80,7 @@
       ]
     }
   },
-  "GET /api/users/username": {
+  "GET /api/users/:username": {
     "description": "serves up a json representation of a single users details by username",
     "queries": [],
     "required in example": {},

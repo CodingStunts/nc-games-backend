@@ -105,7 +105,7 @@ exports.selectCommentsByReview = (review_id) => {
             }
           });
       }
-      return comments;
+      return rows;
     });
 };
 
