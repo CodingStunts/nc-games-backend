@@ -75,7 +75,13 @@ exports.selectReviews = (queryData) => {
     newCategory !== "euro game" &&
     newCategory !== "social deduction" &&
     newCategory !== "dexterity" &&
-    newCategory !== "children's games"
+    newCategory !== "children's games" &&
+    newCategory !== "strategy" &&
+    newCategory !== "hidden-roles" &&
+    newCategory !== "push-your-luck" &&
+    newCategory !== "roll-and-write" &&
+    newCategory !== "deck-building" &&
+    newCategory !== "engine-building"
   ) {
     return Promise.reject({
       status: 404,
