@@ -124,5 +124,5 @@ const seed = (data) => {
       return db.query(queryString);
     });
 };
-//updated seed as some table columns incorrect.
+
 module.exports = seed;
