@@ -1,6 +1,6 @@
 # Northcoders Backend Server Project - Games
 
-[**_Link to hosted server_**](https://jays-games-server.herokuapp.com/api/)
+[**_Link to hosted server_**](https://jays-games-review-site.herokuapp.com/api)
 
 [**_Link to GitHub repository_**](https://github.com/CodingStunts/nc-games-backend)
 
